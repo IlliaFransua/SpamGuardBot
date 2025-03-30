@@ -1,6 +1,6 @@
 [bot]
 # Bot token
-token = "7460476161:AAFLP-EeSsqo2s4gBt4ij-wfttxzVDe0TUA"
+token = "bot-token"
 
 # Bot owners
 owners = [6794636124]
