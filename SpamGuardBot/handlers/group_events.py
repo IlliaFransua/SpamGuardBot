@@ -80,8 +80,7 @@ async def on_text_message(message: Message):
     logger.info(f"Received text message: {message.text}")
 
     if spam_detector.predict(message.text):
-        print("Spam detected")
-        await message.answer(f"Spam detected: {message.text}")
+        # print(f"Spam detected: {message.text}")
         await message.delete()
 
 # @router.message(F.content_type == ContentType.PHOTO)
