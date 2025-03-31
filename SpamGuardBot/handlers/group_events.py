@@ -13,7 +13,13 @@ from PIL import Image
 import numpy as np
 import io
 
-from submodules.SpamGuardService.spam_detection_model import SpamDetectionModel
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+grandparent_dir = os.path.dirname(parent_dir)
+
+sys.path.append(os.path.join(grandparent_dir, 'submodules/SpamGuardService'))
+
+from spam_detection_model import SpamDetectionModel
 
 # Declare spam detection model
 spam_detector = SpamDetectionModel()
@@ -38,18 +44,32 @@ async def on_user_join_or_left(message: Message):
     await message.delete()
 
 
-@router.message(Command("report"))
-async def report_spam(message: Message):
-    if not message.reply_to_message or not message.reply_to_message.text:
-        await message.reply("Команду нужно использовать в ответ на текстовое сообщение.")
-        return
-
-    spam_text = message.reply_to_message.text
-
-    spam_detector.train([spam_text], [])
-
-    await message.reply("Сообщение помечено как спам и добавлено в базу.")
-    logger.info(f"Добавлен новый спам: {spam_text}")
+# @router.message(Command("spam"))
+# async def report_spam(message: Message):
+#     if not message.reply_to_message or not message.reply_to_message.text:
+#         await message.reply("Команду нужно использовать в ответ на текстовое сообщение.")
+#         return
+#
+#     spam_text = message.reply_to_message.text
+#
+#     spam_detector.train_on_spam(spam_text)
+#
+#     await message.reply("Сообщение помечено как спам и добавлено в базу")
+#     print(f"Добавлен новый спам: {spam_text}")
+#
+#
+# @router.message(Command("nospam"))
+# async def report_no_spam(message: Message):
+#     if not message.text:
+#         await message.reply("Нужно написать текст не спама после команды.")
+#         return
+#
+#     non_spam_text = message.text
+#
+#     spam_detector.train_on_non_spam(non_spam_text)
+#
+#     await message.reply("Сообщение помечено как не спам и добавлено в базу")
+#     print(f"Добавлен новый не спам: {non_spam_text}")
 
 
 @router.message(F.content_type == ContentType.TEXT)
@@ -59,40 +79,32 @@ async def on_text_message(message: Message):
     """
     logger.info(f"Received text message: {message.text}")
 
-    if message.text == "яблочки":
-        # await message.delete()
-        await message.reply("Бан ворд")
-        return
-
     if spam_detector.predict(message.text):
-        # await message.delete()
-        await message.reply("Спам, -10 очков Грифиндору")
-        return
+        print("Spam detected")
+        await message.answer(f"Spam detected: {message.text}")
+        await message.delete()
 
-    await message.reply("А вот это не спам, +10 очков Когтеврану")
-
-
-@router.message(F.content_type == ContentType.PHOTO)
-async def on_photo_message(message: Message):
-    """
-    Handler for photo messages.
-    Downloads the photo and processes it as a 2D array of pixels.
-    :param message: The message object containing the photo.
-    """
-    logger.info(f"Received photo message from {message.from_user.id}")
-
-    photo = message.photo[-1]
-    file_info = await message.bot.get_file(photo.file_id)
-
-    file_path = file_info.file_path
-    file = await message.bot.download_file(file_path)
-
-    image_stream = io.BytesIO(file.getvalue())
-
-    image = Image.open(image_stream)
-    image = image.convert("RGB")
-    pixel_array = np.array(image)
-
-    logger.info(f"shape: {pixel_array.shape}")
-
-    await message.reply(f"shape: {pixel_array.shape}")
+# @router.message(F.content_type == ContentType.PHOTO)
+# async def on_photo_message(message: Message):
+#     """
+#     Handler for photo messages.
+#     Downloads the photo and processes it as a 2D array of pixels.
+#     :param message: The message object containing the photo.
+#     """
+#     logger.info(f"Received photo message from {message.from_user.id}")
+#
+#     photo = message.photo[-1]
+#     file_info = await message.bot.get_file(photo.file_id)
+#
+#     file_path = file_info.file_path
+#     file = await message.bot.download_file(file_path)
+#
+#     image_stream = io.BytesIO(file.getvalue())
+#
+#     image = Image.open(image_stream)
+#     image = image.convert("RGB")
+#     pixel_array = np.array(image)
+#
+#     logger.info(f"shape: {pixel_array.shape}")
+#
+#     await message.reply(f"shape: {pixel_array.shape}")
