@@ -7,7 +7,7 @@ the chat experience.
 
 ## Video Demonstration
 
-[![Watch the project in action](https://img.youtube.com/vi/6jZgTEk9BR0/0.jpg)](https://youtu.be/6jZgTEk9BR0)
+[![Watch the project in action](https://img.youtube.com/vi/kxPaYbDYAjU/0.jpg)](https://youtu.be/kxPaYbDYAjU)
 
 [//]: # (## Installation Guide)
 
