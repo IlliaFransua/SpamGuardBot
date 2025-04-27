@@ -3,6 +3,7 @@ package com.fransua.spamguardbot.processor;
 
 import com.fransua.spamguardbot.handler.UpdateHandler;
 import com.fransua.spamguardbot.util.ParsedUpdate;
+import com.fransua.spamguardbot.util.SafeHandlerWrapper;
 import com.fransua.spamguardbot.util.UpdateContext;
 import jakarta.annotation.PreDestroy;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -53,16 +54,7 @@ public class ThreadedUpdateProcessor implements UpdateProcessor {
       updateHandlerList.stream()
           .filter(handler -> handler.canHandle(update))
           .sorted(Comparator.comparingInt(UpdateHandler::getPriority))
-          .forEach(handler -> {
-            try {
-              handler.handle(telegramClient, update);
-            } catch (Exception e) {
-              System.out.println(
-                  "Handler error: " +
-                      handler.getClass().getSimpleName() +
-                      ": " + e.getMessage() + ":\n" + e);
-            }
-          });
+          .forEach(handler -> SafeHandlerWrapper.safeHandle(handler, telegramClient, update));
     } finally {
       UpdateContext.clear();
     }
