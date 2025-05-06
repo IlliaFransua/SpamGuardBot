@@ -6,13 +6,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 
-public interface UpdateHandler {
+public abstract class UpdateHandler {
 
-  boolean canHandle(Update update);
+  protected final ThreadLocal<HandlerProcessingStatus> handlerProcessingStatus =
+      ThreadLocal.withInitial(HandlerProcessingStatus::defaultStatus);
+  
+  public abstract boolean canHandle(Update update);
 
-  void handle(TelegramClient telegramClient, Update update) throws TelegramApiException;
+  public abstract void handle(TelegramClient telegramClient, Update update) throws Exception;
 
-  default int getPriority() {
+  public int getPriority() {
     return 100;
   }
 }
