@@ -2,13 +2,12 @@ package com.fransua.spamguardbot.handler.message.text.spam;
 
 
 import com.fransua.spamguardbot.handler.message.text.BaseTextHandler;
+import com.fransua.spamguardbot.service.spam.ads.AdsDetector;
 import com.fransua.spamguardbot.util.UpdateContext;
-import com.fransua.spamguardbot.util.UpdateUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 
@@ -20,10 +19,11 @@ public class SpamTextHandler extends BaseTextHandler {
   }
 
   @Override
-  public void handle(TelegramClient telegramClient, Update update) throws TelegramApiException {
+  public void handle(TelegramClient telegramClient, Update update) throws Exception {
     Message msg = UpdateContext.getParsedUpdate().getMessage();
     String text = UpdateContext.getParsedUpdate().getAnyTextFromMessage();
-    if (isSpam(text)) {
+    AdsDetector adsDetector = new AdsDetector();
+    if (adsDetector.isSpam(text)) {
       String answer = """
           *👊 А это я удалю*
           """;

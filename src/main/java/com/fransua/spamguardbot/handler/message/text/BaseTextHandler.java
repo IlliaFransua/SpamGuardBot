@@ -21,5 +21,5 @@ public abstract class BaseTextHandler extends BaseMessageHandler {
   }
 
   @Override
-  public abstract void handle(TelegramClient telegramClient, Update update) throws TelegramApiException;
+  public abstract void handle(TelegramClient telegramClient, Update update) throws Exception;
 }

@@ -1,6 +1,7 @@
 package com.fransua.spamguardbot.handler.message;
 
 
+import com.fransua.spamguardbot.handler.HandlerProcessingStatus;
 import com.fransua.spamguardbot.util.UpdateContext;
 import com.fransua.spamguardbot.util.UpdateUtils;
 import com.fransua.spamguardbot.handler.UpdateHandler;
@@ -10,7 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 
-public abstract class BaseMessageHandler implements UpdateHandler {
+public abstract class BaseMessageHandler extends UpdateHandler {
 
   @Override
   public boolean canHandle(Update update) {
@@ -19,5 +20,5 @@ public abstract class BaseMessageHandler implements UpdateHandler {
   }
 
   @Override
-  public abstract void handle(TelegramClient telegramClient, Update update) throws TelegramApiException;
+  public abstract void handle(TelegramClient telegramClient, Update update) throws Exception;
 }
