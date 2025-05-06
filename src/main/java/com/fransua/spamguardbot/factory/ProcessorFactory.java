@@ -2,6 +2,9 @@ package com.fransua.spamguardbot.factory;
 
 
 import com.fransua.spamguardbot.config.BotConfig;
+import com.fransua.spamguardbot.handler.message.text.command.ReportCommandHandler;
+import com.fransua.spamguardbot.handler.message.text.command.admin.SetLogChannelCommandHandler;
+import com.fransua.spamguardbot.handler.query.admin.DeleteMessageCallbackHandler;
 import com.fransua.spamguardbot.processor.ThreadedUpdateProcessor;
 import com.fransua.spamguardbot.handler.UpdateHandler;
 import com.fransua.spamguardbot.handler.message.text.command.StartCommandHandler;
@@ -10,9 +13,11 @@ import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 
 public class ProcessorFactory {
@@ -41,9 +46,32 @@ public class ProcessorFactory {
 
   private static List<UpdateHandler> createUpdateHandlerList() {
     List<UpdateHandler> updateHandlerList = new ArrayList<>();
+    updateHandlerList.addAll(ProcessorFactory.initializeCommandHandlers());
+    updateHandlerList.addAll(ProcessorFactory.initializeSpamTextHandlers());
+    updateHandlerList.addAll(ProcessorFactory.initializeCallbackQueryHandlers());
+    updateHandlerList = updateHandlerList.stream()
+        .sorted(Comparator.comparingInt(UpdateHandler::getPriority))
+        .collect(Collectors.toList());
+    return updateHandlerList;
+  }
+
+  private static List<UpdateHandler> initializeCommandHandlers() {
+    List<UpdateHandler> updateHandlerList = new ArrayList<>();
     updateHandlerList.add(new StartCommandHandler());
+    updateHandlerList.add(new ReportCommandHandler());
+    updateHandlerList.add(new SetLogChannelCommandHandler());
+    return updateHandlerList;
+  }
+
+  private static List<UpdateHandler> initializeSpamTextHandlers() {
+    List<UpdateHandler> updateHandlerList = new ArrayList<>();
     updateHandlerList.add(new SpamTextHandler());
-//    updateHandlerList.add(new PhotoHandler());
+    return updateHandlerList;
+  }
+
+  private static List<UpdateHandler> initializeCallbackQueryHandlers() {
+    List<UpdateHandler> updateHandlerList = new ArrayList<>();
+    updateHandlerList.add(new DeleteMessageCallbackHandler());
     return updateHandlerList;
   }
 
