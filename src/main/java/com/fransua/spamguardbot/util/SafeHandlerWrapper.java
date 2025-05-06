@@ -22,4 +22,19 @@ public class SafeHandlerWrapper {
               ": " + e.getMessage() + ":\n" + e);
     }
   }
+
+  public static boolean safeCanHandle(
+      UpdateHandler handler,
+      Update update
+  ) {
+    try {
+      return handler.canHandle(update);
+    } catch (Exception e) {
+      System.out.println(
+          "Handler error: " +
+              handler.getClass().getSimpleName() +
+              ": " + e.getMessage() + ":\n" + e);
+      return false;
+    }
+  }
 }

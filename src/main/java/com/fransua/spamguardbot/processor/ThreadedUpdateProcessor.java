@@ -9,7 +9,6 @@ import jakarta.annotation.PreDestroy;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,13 +47,13 @@ public class ThreadedUpdateProcessor implements UpdateProcessor {
 
   @Override
   public void process(Update update) {
-    ParsedUpdate parsedUpdate = new ParsedUpdate(update);
-    UpdateContext.setParsedUpdate(parsedUpdate);
+    UpdateContext.setParsedUpdate(new ParsedUpdate(update));
     try {
       updateHandlerList.stream()
-          .filter(handler -> handler.canHandle(update))
-          .sorted(Comparator.comparingInt(UpdateHandler::getPriority))
-          .forEach(handler -> SafeHandlerWrapper.safeHandle(handler, telegramClient, update));
+          .filter(handler ->
+              SafeHandlerWrapper.safeCanHandle(handler, update))
+          .forEach(handler ->
+              SafeHandlerWrapper.safeHandle(handler, telegramClient, update));
     } finally {
       UpdateContext.clear();
     }
