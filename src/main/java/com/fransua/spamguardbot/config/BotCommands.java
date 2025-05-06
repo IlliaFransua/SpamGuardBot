@@ -19,4 +19,13 @@ public class BotCommands {
   /// unban
   /// stats
   /// reputation/rep/info
+  
+  public static class Admin {
+    // TODO: add prefix to properties
+//    /// setPrefix
+//    public static final String SET_PREFIX_COMMAND = COMMAND_PREFIX + "setPrefix";
+
+    /// setLogChannel
+    public static final String SET_LOG_CHANNEL_COMMAND = COMMAND_PREFIX + "setLogChannel";
+  }
 }
