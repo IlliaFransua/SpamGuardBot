@@ -19,7 +19,7 @@ public class StartCommandHandler extends BaseTextHandler {
       return false;
     }
     String text = UpdateContext.getParsedUpdate().getAnyTextFromMessage();
-    return text.equalsIgnoreCase(BotCommands.startCommand);
+    return text.equalsIgnoreCase(BotCommands.START_COMMAND);
   }
 
   @Override
@@ -28,10 +28,10 @@ public class StartCommandHandler extends BaseTextHandler {
   }
 
   @Override
-  public void handle(TelegramClient telegramClient, Update update) throws TelegramApiException {
+  public void handle(TelegramClient telegramClient, Update update) throws Exception {
     Message msg = UpdateContext.getParsedUpdate().getMessage();
     String text = UpdateContext.getParsedUpdate().getAnyTextFromMessage();
-    if (text.startsWith(BotCommands.startCommand)) {
+    if (text.startsWith(BotCommands.START_COMMAND)) {
       String answer = """
           *🏳️‍🌈 Привет путник*
           """;
