@@ -8,25 +8,33 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class ParsedUpdate {
 
   private final Update update;
-  private Message msg;
-  private String anyTextFromMsg;
+
+  private Message message;
+
+  private String anyTextFromMessage;
+
+  private boolean isAdminMsg;
 
   public ParsedUpdate(Update update) {
     this.update = update;
   }
 
   public Message getMessage() {
-    if (msg == null) {
-      msg = UpdateUtils.extractMessage(update).orElseThrow(() -> new IllegalArgumentException("Message not found in update"));
+    if (message == null) {
+      message = UpdateUtils.extractMessage(update).orElseThrow(() -> new IllegalArgumentException("Message not found in update"));
     }
-    return msg;
+    return message;
   }
 
   public String getAnyTextFromMessage() {
-    if (anyTextFromMsg == null) {
-      anyTextFromMsg = UpdateUtils.extractAnyTextFromMessage(getMessage()).orElseThrow(() -> new IllegalArgumentException("Message contains no text"));
+    if (anyTextFromMessage == null) {
+      anyTextFromMessage = UpdateUtils.extractAnyTextFromMessage(getMessage()).orElseThrow(() -> new IllegalArgumentException("Message contains no text"));
     }
-    return anyTextFromMsg;
+    return anyTextFromMessage;
+  }
+
+  public boolean isAdminMessage() {
+    return UpdateUtils.isAdminMessage(message);
   }
 
 }
