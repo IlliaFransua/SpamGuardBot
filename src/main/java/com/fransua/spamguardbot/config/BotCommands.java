@@ -3,16 +3,16 @@ package com.fransua.spamguardbot.config;
 
 public class BotCommands {
 
-  public static final String commandPrefix = "/";
+  public static final String COMMAND_PREFIX = "/";
 
   /// Start
-  public static final String startCommand = commandPrefix + "start";
+  public static final String START_COMMAND = COMMAND_PREFIX + "start";
 
   /// Help
-  public static final String helpCommand = commandPrefix + "help";
+  public static final String HELP_COMMAND = COMMAND_PREFIX + "help";
 
   /// Report
-  public static final String reportCommand = commandPrefix + "report";
+  public static final String REPORT_COMMAND = COMMAND_PREFIX + "report";
 
   /// commands
   /// ban
