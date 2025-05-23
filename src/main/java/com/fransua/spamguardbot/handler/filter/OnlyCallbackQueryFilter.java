@@ -9,14 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class OnlyCallbackQueryFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    if (!OnlyCallbackQueryFilter.callbackQueryHasValidMessage(update)) {
-      return false;
-    }
-    if (!OnlyCallbackQueryFilter.callbackQueryHasValidData(update)) {
-      return false;
-    }
-    return canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyCallbackQueryFilter.callbackQueryHasValidMessage(update)
+        && OnlyCallbackQueryFilter.callbackQueryHasValidData(update);
   }
 
   static boolean callbackQueryHasValidMessage(Update update) {

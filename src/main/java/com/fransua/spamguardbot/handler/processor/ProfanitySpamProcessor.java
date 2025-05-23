@@ -4,6 +4,8 @@ import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.service.AdsDetectorService;
 import com.fransua.spamguardbot.service.BotConfigService;
 import com.fransua.spamguardbot.util.UpdateContext;
+import com.fransua.spamguardbot.util.UpdateUtils;
+import java.util.Optional;
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -25,8 +27,16 @@ public class ProfanitySpamProcessor implements Processor {
 
   @Override
   public void process(Update update) {
-    Message msg = UpdateContext.getParsedUpdate().getMessage();
-    String text = UpdateContext.getParsedUpdate().getAnyTextFromMessage();
+    Optional<Message> optionalMessage = UpdateUtils.extractMessage(update);
+    if (optionalMessage.isEmpty()) {
+      return;
+    }
+    Message msg = optionalMessage.get();
+    Optional<String> optionalText = UpdateUtils.extractAnyTextFromMessage(msg);
+    if (optionalText.isEmpty()) {
+      return;
+    }
+    String text = optionalText.get();
     AdsDetectorService adsDetector = new AdsDetectorService();
     if (adsDetector.isSpam(text)) {
       String answer = """

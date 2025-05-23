@@ -10,8 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.User;
 public class OnlyAdminFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlyAdminFilter.isUserAdmin(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyAdminFilter.isUserAdmin(update);
   }
 
   static boolean isUserAdmin(Update update) {

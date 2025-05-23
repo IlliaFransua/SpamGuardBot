@@ -5,6 +5,8 @@ import com.fransua.spamguardbot.config.BotConfig;
 import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.service.BotConfigService;
 import com.fransua.spamguardbot.util.UpdateContext;
+import com.fransua.spamguardbot.util.UpdateUtils;
+import java.util.Optional;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -28,8 +30,16 @@ public class SetChatCommandProcessor implements Processor {
 
   @Override
   public void process(Update update) {
-    Message msg = UpdateContext.getParsedUpdate().getMessage();
-    String text = UpdateContext.getParsedUpdate().getAnyTextFromMessage();
+    Optional<Message> optionalMessage = UpdateUtils.extractMessage(update);
+    if (optionalMessage.isEmpty()) {
+      return;
+    }
+    Message msg = optionalMessage.get();
+    Optional<String> optionalText = UpdateUtils.extractAnyTextFromMessage(msg);
+    if (optionalText.isEmpty()) {
+      return;
+    }
+    String text = optionalText.get();
     if (text.startsWith(BotCommands.Admin.SET_CHAT_COMMAND)) {
       long chatId = msg.getChatId();
       int messageId = msg.getMessageId();

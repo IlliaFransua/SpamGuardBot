@@ -8,11 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class OnlyMessageWithSender extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return hasMessageSender(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyMessageWithSender.hasMessageSender(update);
   }
 
-  private boolean hasMessageSender(Update update) {
+  static boolean hasMessageSender(Update update) {
     Message message = UpdateUtils.extractMessage(update).orElse(null);
     return message != null && message.getFrom() != null;
   }

@@ -8,8 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class OnlyGroupMessageFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlyGroupMessageFilter.updateIsGroupMessage(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyGroupMessageFilter.updateIsGroupMessage(update);
   }
 
   static boolean updateIsGroupMessage(Update update) {

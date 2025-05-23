@@ -1,9 +1,7 @@
 package com.fransua.spamguardbot.util;
 
-
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-
 
 public class ParsedUpdate {
 
@@ -20,15 +18,13 @@ public class ParsedUpdate {
   }
 
   public Message getMessage() {
-    if (message == null) {
-      message = UpdateUtils.extractMessage(update).orElseThrow(() -> new IllegalArgumentException("Message not found in update"));
-    }
-    return message;
+    return null;
   }
 
   public String getAnyTextFromMessage() {
     if (anyTextFromMessage == null) {
-      anyTextFromMessage = UpdateUtils.extractAnyTextFromMessage(getMessage()).orElseThrow(() -> new IllegalArgumentException("Message contains no text"));
+      anyTextFromMessage = UpdateUtils.extractAnyTextFromMessage(getMessage())
+          .orElseThrow(() -> new IllegalArgumentException("Message contains no text."));
     }
     return anyTextFromMessage;
   }

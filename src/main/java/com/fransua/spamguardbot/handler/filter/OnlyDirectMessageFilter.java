@@ -6,9 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class OnlyDirectMessageFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlyDirectMessageFilter.updateIsDirectMessage(update)
-        && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyDirectMessageFilter.updateIsDirectMessage(update);
   }
 
   static boolean updateIsDirectMessage(Update update) {

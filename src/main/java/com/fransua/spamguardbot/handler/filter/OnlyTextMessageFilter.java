@@ -8,8 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class OnlyTextMessageFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlyTextMessageFilter.messageHasNonBlankText(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyTextMessageFilter.messageHasNonBlankText(update);
   }
 
   static boolean messageHasNonBlankText(Update update) {

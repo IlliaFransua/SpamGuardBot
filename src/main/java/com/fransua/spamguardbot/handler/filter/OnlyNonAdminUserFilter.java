@@ -6,8 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class OnlyNonAdminUserFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlyNonAdminUserFilter.isNotAdmin(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyNonAdminUserFilter.isNotAdmin(update);
   }
 
   static boolean isNotAdmin(Update update) {

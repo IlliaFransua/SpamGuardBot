@@ -8,11 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class OnlyRepliedMessage extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return hasReplyToMessage(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyRepliedMessage.hasReplyToMessage(update);
   }
 
-  private boolean hasReplyToMessage(Update update) {
+  static boolean hasReplyToMessage(Update update) {
     Message message = UpdateUtils.extractMessage(update).orElse(null);
     if (message == null) {
       return false;

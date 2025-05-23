@@ -7,9 +7,12 @@ public abstract class Filter {
 
   protected Filter next;
 
-  public abstract boolean canHandle(Update update);
+  public boolean canHandle(Update update) {
+    return canThisHandle(update) && canNextHandle(update);
+  }
 
-  // TODO: изменить чтобы созданные нами фильтры не вызывали этот метод дальше, а он сам будет вызываться (то есть наследники будут реализовывать метод который мы потом отдельно вызовем для цепочки)
+  public abstract boolean canThisHandle(Update update);
+
   protected boolean canNextHandle(Update update) {
     return next == null || next.canHandle(update);
   }

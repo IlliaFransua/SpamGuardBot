@@ -9,11 +9,11 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class OnlyHumanSenderFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return isSenderHuman(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyHumanSenderFilter.isSenderHuman(update);
   }
 
-  private boolean isSenderHuman(Update update) {
+  static boolean isSenderHuman(Update update) {
     Message message = UpdateUtils.extractMessage(update).orElse(null);
     if (message == null || message.getFrom() == null) {
       return false;

@@ -15,9 +15,8 @@ public class OnlyCommandFilter extends Filter {
   }
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlyCommandFilter.updateHasCommand(update, expectedCommand)
-        && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlyCommandFilter.updateHasCommand(update, expectedCommand);
   }
 
   static boolean updateHasCommand(Update update, String command) {

@@ -9,8 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 public class OnlySuperGroupMessageFilter extends Filter {
 
   @Override
-  public boolean canHandle(Update update) {
-    return OnlySuperGroupMessageFilter.updateIsGroupMessage(update) && canNextHandle(update);
+  public boolean canThisHandle(Update update) {
+    return OnlySuperGroupMessageFilter.updateIsGroupMessage(update);
   }
 
   static boolean updateIsGroupMessage(Update update) {
