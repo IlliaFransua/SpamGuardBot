@@ -1,13 +1,14 @@
 package com.fransua.spamguardbot.config;
 
-
+import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class BotConfig {
 
@@ -17,7 +18,11 @@ public class BotConfig {
 
   public static final String SpamGuardBot_USERNAME = System.getenv("SpamGuardBot_USERNAME");
 
-  public static final long[] adminTeam = {6794636124L, 456};
+  public static final long[] adminTeam = {6794636124L, 456L};
+
+  public static boolean isUserAdmin(long userId) {
+    return LongStream.of(adminTeam).anyMatch(adminId -> adminId == userId);
+  }
 
   private static long logChannelId = Long.parseLong(System.getenv("LOG_CHANNEL_ID"));
 
@@ -31,20 +36,20 @@ public class BotConfig {
 
   private static String getCorrectlyTextForDeleteMessageButton(boolean isDeleted) {
     return isDeleted
-        ? "✅ Сообщение нарушителя удалено"
-        : "🗑 Удалить сообщение нарушителя";
+        ? "✅ Повідомлення порушника видалено"
+        : "🗑 Видалити повідомлення порушника";
   }
 
   private static String getCorrectlyTextForBanReporterButton(boolean isReporterBanned) {
     return isReporterBanned
-        ? "🚫 Заявитель заблокирован"
-        : "⛔ Заблокировать заявителя";
+        ? "🚫 Заявник заблокований"
+        : "⛔ Заблокувати заявника";
   }
 
   private static String getCorrectlyTextForMuteReporterButton(boolean isReporterMuted) {
     return isReporterMuted
-        ? "🔕 Заявитель замьючен"
-        : "🔇 Замьютить заявителя в чате на 3 часа";
+        ? "🔕 Заявник зам'ючен"
+        : "🔇 Зам'ютити заявника в чаті на 3 години";
   }
 
   private static final String MESSAGE_DELETED = "message_deleted";
@@ -78,24 +83,24 @@ public class BotConfig {
   }
 
   public static List<String> getDeleteMessageCallbackDataList() {
-    List<String> deleteMessageCallbackDataList = new ArrayList<>();
-    deleteMessageCallbackDataList.add(MESSAGE_DELETED);
-    deleteMessageCallbackDataList.add(DELETE_MESSAGE);
-    return deleteMessageCallbackDataList;
+    List<String> callbackDataList = new ArrayList<>();
+    callbackDataList.add(MESSAGE_DELETED);
+    callbackDataList.add(DELETE_MESSAGE);
+    return callbackDataList;
   }
 
   public static List<String> getBanReporterCallbackDataList() {
-    List<String> deleteMessageCallbackDataList = new ArrayList<>();
-    deleteMessageCallbackDataList.add(REPORTER_BANNED);
-    deleteMessageCallbackDataList.add(BAN_REPORTER);
-    return deleteMessageCallbackDataList;
+    List<String> callbackDataList = new ArrayList<>();
+    callbackDataList.add(REPORTER_BANNED);
+    callbackDataList.add(BAN_REPORTER);
+    return callbackDataList;
   }
 
   public static List<String> getMuteReporterCallbackDataList() {
-    List<String> deleteMessageCallbackDataList = new ArrayList<>();
-    deleteMessageCallbackDataList.add(REPORTER_MUTED);
-    deleteMessageCallbackDataList.add(MUTE_REPORTER);
-    return deleteMessageCallbackDataList;
+    List<String> callbackDataList = new ArrayList<>();
+    callbackDataList.add(REPORTER_MUTED);
+    callbackDataList.add(MUTE_REPORTER);
+    return callbackDataList;
   }
 
   public static List<String> getCallbackDataList() {
@@ -109,8 +114,7 @@ public class BotConfig {
   public static InlineKeyboardMarkup createInlineKeyboardMarkup(
       boolean isDeleted,
       boolean isReporterBanned,
-      boolean isReporterMuted
-  ) {
+      boolean isReporterMuted) {
     return buildInlineKeyboardMarkup(
         BotConfig.buildDeleteMessageButton(isDeleted),
         BotConfig.buildBanReporterButton(isReporterBanned),
@@ -141,12 +145,12 @@ public class BotConfig {
   private static InlineKeyboardMarkup buildInlineKeyboardMarkup(
       InlineKeyboardButton deleteMessageButton,
       InlineKeyboardButton banReporterButton,
-      InlineKeyboardButton muteReporterInChatButton
-  ) {
+      InlineKeyboardButton muteReporterInChatButton) {
     List<InlineKeyboardRow> keyboard = new ArrayList<>();
     keyboard.add(new InlineKeyboardRow(deleteMessageButton));
-//    keyboard.add(new InlineKeyboardRow(banReporterButton));
-//    keyboard.add(new InlineKeyboardRow(muteReporterInChatButton));
+    // TODO: create banReportButton
+    // keyboard.add(new InlineKeyboardRow(banReporterButton));
+    keyboard.add(new InlineKeyboardRow(muteReporterInChatButton));
     return InlineKeyboardMarkup
         .builder()
         .keyboard(keyboard)

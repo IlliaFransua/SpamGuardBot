@@ -1,7 +1,6 @@
 package com.fransua.spamguardbot.processor;
 
-
-import com.fransua.spamguardbot.handler.UpdateHandler;
+import com.fransua.spamguardbot.handler.core.UpdateHandler;
 import com.fransua.spamguardbot.util.ParsedUpdate;
 import com.fransua.spamguardbot.util.SafeHandlerWrapper;
 import com.fransua.spamguardbot.util.UpdateContext;
@@ -12,7 +11,6 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
 
 public class ThreadedUpdateProcessor implements UpdateProcessor {
 
@@ -66,7 +64,7 @@ public class ThreadedUpdateProcessor implements UpdateProcessor {
       if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
         executorService.shutdownNow();
         if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-          System.err.println("ExecutorService не смог завершиться");
+          System.err.println("ExecutorService не вдалося завершити");
         }
       }
     } catch (Exception e) {

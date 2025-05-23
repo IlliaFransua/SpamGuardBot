@@ -1,5 +1,4 @@
-package com.fransua.spamguardbot.handler;
-
+package com.fransua.spamguardbot.handler.core;
 
 public enum HandlerProcessingStatus {
   NOT_CHECKED,

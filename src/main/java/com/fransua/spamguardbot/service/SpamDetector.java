@@ -1,5 +1,4 @@
-package com.fransua.spamguardbot.service.spam;
-
+package com.fransua.spamguardbot.service;
 
 public interface SpamDetector {
 

@@ -1,10 +1,8 @@
 package com.fransua.spamguardbot.util;
 
-
-import com.fransua.spamguardbot.handler.UpdateHandler;
+import com.fransua.spamguardbot.handler.core.UpdateHandler;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
-
 
 public class SafeHandlerWrapper {
 

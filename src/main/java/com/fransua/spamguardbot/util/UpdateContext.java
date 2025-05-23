@@ -1,8 +1,6 @@
 package com.fransua.spamguardbot.util;
 
-
 import org.telegram.telegrambots.meta.api.objects.message.Message;
-
 
 public class UpdateContext {
 
@@ -15,7 +13,7 @@ public class UpdateContext {
   public static ParsedUpdate getParsedUpdate() {
     ParsedUpdate parsedUpdate = currentUpdate.get();
     if (parsedUpdate == null) {
-      throw new IllegalStateException("No parsed update available for this thread");
+      throw new IllegalStateException("No parsed update available for this thread.");
     }
     return currentUpdate.get();
   }
