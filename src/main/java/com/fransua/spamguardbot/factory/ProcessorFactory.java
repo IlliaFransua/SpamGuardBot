@@ -27,7 +27,7 @@ public class ProcessorFactory {
   }
 
   public static ThreadedUpdateProcessor createProcessor() {
-    return createProcessor(8, BotConfig.SpamGuardBot_TOKEN);
+    return createProcessor(16, BotConfig.SpamGuardBot_TOKEN);
   }
 
   public static ThreadedUpdateProcessor createProcessor(int nThreads, String SpamGuardBot_TOKEN) {
@@ -173,7 +173,7 @@ public class ProcessorFactory {
         deleteMessageQueryHandler.process(update);
       }
     });
-    
+
     // RestrictUserCallbackHandler
     Handler restrictUserCallbackHandler = FilterProcessorFactory.createRestrictUserCallbackHandler(
         telegramClient, configService);
