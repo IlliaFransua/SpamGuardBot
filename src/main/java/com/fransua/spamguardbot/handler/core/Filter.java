@@ -21,7 +21,7 @@ public abstract class Filter {
     this.next = next;
   }
 
-  public FilterChainBuilder builder() {
+  public static FilterChainBuilder builder() {
     return new FilterChainBuilder();
   }
 }

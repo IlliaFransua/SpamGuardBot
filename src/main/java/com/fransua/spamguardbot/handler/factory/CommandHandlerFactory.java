@@ -29,7 +29,7 @@ public class CommandHandlerFactory {
 
   public static Handler createStartCommandHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filterChain = new FilterChainBuilder()
+    Filter filterChain = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyCommandFilter(commandPrefix, BotCommands.START_COMMAND_WITHOUT_PREFIX))
         .add(new OnlyChatIdFilter(configService.getChatId()))
@@ -41,7 +41,7 @@ public class CommandHandlerFactory {
 
   public static Handler createReportCommandHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filterChain = new FilterChainBuilder()
+    Filter filterChain = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyHumanSenderFilter())
         .add(new OnlyRepliedMessage())
@@ -55,7 +55,7 @@ public class CommandHandlerFactory {
 
   public static Handler createSetLogChannelCommandHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filterChain = new FilterChainBuilder()
+    Filter filterChain = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCommandFilter(commandPrefix, Admin.SET_LOG_CHANNEL_COMMAND_WITHOUT_PREFIX))
@@ -67,7 +67,7 @@ public class CommandHandlerFactory {
 
   public static Handler createSetChatCommandHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filterChain = new FilterChainBuilder()
+    Filter filterChain = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCommandFilter(commandPrefix, Admin.SET_CHAT_COMMAND_WITHOUT_PREFIX))

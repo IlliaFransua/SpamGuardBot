@@ -5,9 +5,9 @@ import com.fransua.spamguardbot.handler.core.FilterProcessorHandler;
 import com.fransua.spamguardbot.handler.core.Handler;
 import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.handler.filter.FilterChainBuilder;
+import com.fransua.spamguardbot.handler.filter.NotFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyAdminFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyCallbackQueryFilter;
-import com.fransua.spamguardbot.handler.filter.OnlyNonAdminUserFilter;
 import com.fransua.spamguardbot.handler.filter.OnlySuperGroupMessageFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyChatIdFilter;
 import com.fransua.spamguardbot.handler.processor.DeleteMessageQueryProcessor;
@@ -23,9 +23,9 @@ public class FilterProcessorFactory {
 
   public static Handler createProfanitySpamHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filter = new FilterChainBuilder()
+    Filter filter = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
-        .add(new OnlyNonAdminUserFilter())
+        .add(new NotFilter(new OnlyAdminFilter()))
         .add(new OnlyChatIdFilter(configService.getChatId()))
         .build();
 
@@ -35,7 +35,7 @@ public class FilterProcessorFactory {
 
   public static Handler createDeleteMessageQueryHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filter = new FilterChainBuilder()
+    Filter filter = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCallbackQueryFilter())
@@ -48,7 +48,7 @@ public class FilterProcessorFactory {
 
   public static Handler createRestrictUserCallbackHandler(TelegramClient telegramClient,
       BotConfigService configService) {
-    Filter filter = new FilterChainBuilder()
+    Filter filter = Filter.builder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCallbackQueryFilter())
