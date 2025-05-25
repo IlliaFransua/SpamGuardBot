@@ -91,6 +91,7 @@ public class BotConfigService {
     } catch (IOException e) {
       throw new RuntimeException("Failed to save properties", e);
     }
+    loadLogChannelId();
   }
 
   private void saveChatIdToProperties(long newChatId) {
@@ -108,5 +109,6 @@ public class BotConfigService {
     } catch (IOException e) {
       throw new RuntimeException("Failed to save properties", e);
     }
+    loadChatId();
   }
 }
