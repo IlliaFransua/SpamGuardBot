@@ -9,6 +9,7 @@ import com.fransua.spamguardbot.handler.filter.OnlyAdminFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyCallbackQueryFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyNonAdminUserFilter;
 import com.fransua.spamguardbot.handler.filter.OnlySuperGroupMessageFilter;
+import com.fransua.spamguardbot.handler.filter.OnlyChatIdFilter;
 import com.fransua.spamguardbot.handler.processor.DeleteMessageQueryProcessor;
 import com.fransua.spamguardbot.handler.processor.ProfanitySpamProcessor;
 import com.fransua.spamguardbot.handler.processor.RestrictUserCallbackProcessor;
@@ -25,6 +26,7 @@ public class FilterProcessorFactory {
     Filter filter = new FilterChainBuilder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyNonAdminUserFilter())
+        .add(new OnlyChatIdFilter(configService.getChatId()))
         .build();
 
     Processor processor = new ProfanitySpamProcessor(telegramClient, configService);
@@ -37,6 +39,7 @@ public class FilterProcessorFactory {
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCallbackQueryFilter())
+        .add(new OnlyChatIdFilter(configService.getLogChannelId()))
         .build();
 
     Processor processor = new DeleteMessageQueryProcessor(telegramClient, configService);
@@ -49,6 +52,7 @@ public class FilterProcessorFactory {
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCallbackQueryFilter())
+        .add(new OnlyChatIdFilter(configService.getLogChannelId()))
         .build();
 
     Processor processor = new RestrictUserCallbackProcessor(telegramClient, configService);

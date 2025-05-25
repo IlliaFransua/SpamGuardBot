@@ -12,6 +12,7 @@ import com.fransua.spamguardbot.handler.filter.OnlyCommandFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyHumanSenderFilter;
 import com.fransua.spamguardbot.handler.filter.OnlyRepliedMessage;
 import com.fransua.spamguardbot.handler.filter.OnlySuperGroupMessageFilter;
+import com.fransua.spamguardbot.handler.filter.OnlyChatIdFilter;
 import com.fransua.spamguardbot.handler.processor.ReportCommandProcessor;
 import com.fransua.spamguardbot.handler.processor.SetChatCommandProcessor;
 import com.fransua.spamguardbot.handler.processor.SetLogChannelCommandProcessor;
@@ -27,50 +28,52 @@ public class CommandHandlerFactory {
   }
 
   public static Handler createStartCommandHandler(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+      BotConfigService configService) {
     Filter filterChain = new FilterChainBuilder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyCommandFilter(commandPrefix, BotCommands.START_COMMAND_WITHOUT_PREFIX))
+        .add(new OnlyChatIdFilter(configService.getChatId()))
         .build();
 
-    Processor processor = new StartCommandProcessor(telegramClient, botConfigService);
+    Processor processor = new StartCommandProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filterChain, processor);
   }
 
   public static Handler createReportCommandHandler(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+      BotConfigService configService) {
     Filter filterChain = new FilterChainBuilder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyHumanSenderFilter())
         .add(new OnlyRepliedMessage())
         .add(new OnlyCommandFilter(commandPrefix, BotCommands.REPORT_COMMAND_WITHOUT_PREFIX))
+        .add(new OnlyChatIdFilter(configService.getChatId()))
         .build();
 
-    Processor processor = new ReportCommandProcessor(telegramClient, botConfigService);
+    Processor processor = new ReportCommandProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filterChain, processor);
   }
 
   public static Handler createSetLogChannelCommandHandler(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+      BotConfigService configService) {
     Filter filterChain = new FilterChainBuilder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCommandFilter(commandPrefix, Admin.SET_LOG_CHANNEL_COMMAND_WITHOUT_PREFIX))
         .build();
 
-    Processor processor = new SetLogChannelCommandProcessor(telegramClient, botConfigService);
+    Processor processor = new SetLogChannelCommandProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filterChain, processor);
   }
 
   public static Handler createSetChatCommandHandler(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+      BotConfigService configService) {
     Filter filterChain = new FilterChainBuilder()
         .add(new OnlySuperGroupMessageFilter())
         .add(new OnlyAdminFilter())
         .add(new OnlyCommandFilter(commandPrefix, Admin.SET_CHAT_COMMAND_WITHOUT_PREFIX))
         .build();
 
-    Processor processor = new SetChatCommandProcessor(telegramClient, botConfigService);
+    Processor processor = new SetChatCommandProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filterChain, processor);
   }
 }
