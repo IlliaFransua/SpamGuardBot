@@ -24,8 +24,7 @@ public class FilterProcessorFactory {
   public static Handler createProfanitySpamHandler(TelegramClient telegramClient,
       BotConfigService configService) {
     Filter filter = Filter.builder()
-        .add(new OnlySuperGroupMessageFilter())
-        .add(new NotFilter(new OnlyAdminFilter()))
+        .add(new NotFilter(new OnlyAdminFilter(telegramClient)))
         .add(new OnlyChatIdFilter(configService.getChatId()))
         .build();
 
@@ -36,9 +35,8 @@ public class FilterProcessorFactory {
   public static Handler createDeleteMessageQueryHandler(TelegramClient telegramClient,
       BotConfigService configService) {
     Filter filter = Filter.builder()
-        .add(new OnlySuperGroupMessageFilter())
-        .add(new OnlyAdminFilter())
         .add(new OnlyCallbackQueryFilter())
+        .add(new OnlyAdminFilter(telegramClient))
         .add(new OnlyChatIdFilter(configService.getLogChannelId()))
         .build();
 
@@ -49,9 +47,8 @@ public class FilterProcessorFactory {
   public static Handler createRestrictUserCallbackHandler(TelegramClient telegramClient,
       BotConfigService configService) {
     Filter filter = Filter.builder()
-        .add(new OnlySuperGroupMessageFilter())
-        .add(new OnlyAdminFilter())
         .add(new OnlyCallbackQueryFilter())
+        .add(new OnlyAdminFilter(telegramClient))
         .add(new OnlyChatIdFilter(configService.getLogChannelId()))
         .build();
 
