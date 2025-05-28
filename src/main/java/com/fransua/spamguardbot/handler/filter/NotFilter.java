@@ -13,6 +13,6 @@ public class NotFilter extends Filter {
 
   @Override
   public boolean canThisHandle(Update update) {
-    return filter != null && !filter.canHandle(update);
+    return filter == null || !filter.canHandle(update);
   }
 }
