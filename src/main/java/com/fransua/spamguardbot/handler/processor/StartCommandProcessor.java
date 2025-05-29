@@ -1,6 +1,6 @@
 package com.fransua.spamguardbot.handler.processor;
 
-import com.fransua.spamguardbot.config.BotCommands;
+import com.fransua.spamguardbot.config.BotConfig;
 import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.service.BotConfigService;
 import com.fransua.spamguardbot.util.UpdateUtils;
@@ -29,7 +29,7 @@ public class StartCommandProcessor implements Processor {
     }
     Message actualMessage = optionalMessage.get();
     String text = UpdateUtils.extractAnyTextFromMessage(actualMessage).orElse("");
-    if (text.startsWith(BotCommands.START_COMMAND)) {
+    if (text.startsWith(BotConfig.Commands.START_COMMAND)) {
       String answer = """
           *⚔️ Привіт путник*
           """;

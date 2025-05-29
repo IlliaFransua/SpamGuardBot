@@ -1,6 +1,5 @@
 package com.fransua.spamguardbot.handler.processor;
 
-import com.fransua.spamguardbot.config.BotCommands;
 import com.fransua.spamguardbot.config.BotConfig;
 import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.service.BotConfigService;
@@ -61,7 +60,7 @@ public class ReportCommandProcessor implements Processor {
   }
 
   private String extractReportNote(String fullCommandText) {
-    return fullCommandText.substring(BotCommands.REPORT_COMMAND.length());
+    return fullCommandText.substring(BotConfig.Commands.REPORT_COMMAND.length());
   }
 
   // TODO: refactor

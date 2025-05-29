@@ -1,10 +1,8 @@
 package com.fransua.spamguardbot.handler.processor;
 
-import com.fransua.spamguardbot.config.BotCommands.Admin;
 import com.fransua.spamguardbot.config.BotConfig;
 import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.service.BotConfigService;
-import com.fransua.spamguardbot.util.UpdateContext;
 import com.fransua.spamguardbot.util.UpdateUtils;
 import java.util.Optional;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
@@ -40,7 +38,7 @@ public class SetLogChannelCommandProcessor implements Processor {
       return;
     }
     String text = optionalText.get();
-    if (text.startsWith(Admin.SET_LOG_CHANNEL_COMMAND)) {
+    if (text.startsWith(BotConfig.Commands.Admin.SET_LOG_CHANNEL_COMMAND)) {
       long chatId = msg.getChatId();
       int messageId = msg.getMessageId();
 
