@@ -1,6 +1,7 @@
 package com.fransua.spamguardbot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.net.URI;
@@ -39,9 +40,20 @@ public class AdsDetectorService implements SpamDetector {
       HttpResponse<String> response = httpClient.send(request,
           HttpResponse.BodyHandlers.ofString());
       String resBody = response.body();
-      JsonObject resJsonObject = JsonParser.parseString(resBody).getAsJsonObject();
+      JsonElement jsonElement = JsonParser.parseString(resBody);
+      if (jsonElement == null || !jsonElement.isJsonObject()) {
+        return false;
+      }
+      JsonObject resJsonObject = jsonElement.getAsJsonObject();
+      if (resJsonObject.isEmpty()) {
+        return false;
+      }
+      JsonElement resultElement = resJsonObject.get("result");
+      if (resultElement == null) {
+        return false;
+      }
 
-      return resJsonObject.get("result").getAsBoolean();
+      return resultElement.getAsBoolean();
     } catch (Exception e) {
       e.printStackTrace();
       return false;
