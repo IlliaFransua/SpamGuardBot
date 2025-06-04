@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.message.MaybeInaccessibleMessage;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 

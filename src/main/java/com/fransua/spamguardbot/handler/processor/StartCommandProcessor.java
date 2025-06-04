@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-// TODO: refactor
 public class StartCommandProcessor implements Processor {
 
   private final TelegramClient telegramClient;

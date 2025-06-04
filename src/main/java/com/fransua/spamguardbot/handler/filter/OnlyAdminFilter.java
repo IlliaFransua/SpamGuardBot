@@ -16,14 +16,27 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 public class OnlyAdminFilter extends Filter {
 
   private final TelegramClient telegramClient;
+  private final Long chatId;
 
   public OnlyAdminFilter(TelegramClient telegramClient) {
     this.telegramClient = telegramClient;
+    this.chatId = null;
+  }
+
+  public OnlyAdminFilter(TelegramClient telegramClient, long chatId) {
+    this.telegramClient = telegramClient;
+    this.chatId = chatId;
   }
 
   @Override
   public boolean canThisHandle(Update update) {
-    return OnlyAdminFilter.isUserAdmin(update) || hasAdminPermissions(telegramClient, update);
+    if (chatId != null) {
+      return OnlyAdminFilter.isUserAdmin(update) ||
+          OnlyAdminFilter.hasAdminPermissions(telegramClient, update, chatId);
+    } else {
+      return OnlyAdminFilter.isUserAdmin(update) ||
+          OnlyAdminFilter.hasAdminPermissions(telegramClient, update);
+    }
   }
 
   static boolean isUserAdmin(Update update) {
@@ -50,6 +63,26 @@ public class OnlyAdminFilter extends Filter {
     GetChatMember getChatMember = GetChatMember
         .builder()
         .chatId(message.getChatId())
+        .userId(user.getId())
+        .build();
+    try {
+      ChatMember chatMember = telegramClient.execute(getChatMember);
+      return chatMember instanceof ChatMemberAdministrator;
+    } catch (TelegramApiException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  static boolean hasAdminPermissions(TelegramClient telegramClient, Update update, long chatId) {
+    Optional<User> optionalUser = UpdateUtils.extractUser(update);
+    if (optionalUser.isEmpty()) {
+      return false;
+    }
+    User user = optionalUser.get();
+    GetChatMember getChatMember = GetChatMember
+        .builder()
+        .chatId(chatId)
         .userId(user.getId())
         .build();
     try {

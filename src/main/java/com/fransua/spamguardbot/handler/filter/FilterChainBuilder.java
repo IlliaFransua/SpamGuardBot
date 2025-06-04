@@ -3,7 +3,6 @@ package com.fransua.spamguardbot.handler.filter;
 import com.fransua.spamguardbot.handler.core.Filter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class FilterChainBuilder {

@@ -20,7 +20,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-// TODO: refactor
 public class DeleteMessageQueryProcessor implements Processor {
 
   private final TelegramClient telegramClient;
@@ -66,7 +65,6 @@ public class DeleteMessageQueryProcessor implements Processor {
 
     JsonObject jsonObject = JsonParser.parseString(rawJson).getAsJsonObject();
 
-    // TODO: exceptions
     long spamMessageChatId = jsonObject.get("repliedMessageChatId").getAsLong();
     int spamMessageId = jsonObject.get("replyToMessageId").getAsInt();
 

@@ -20,7 +20,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-// TODO: refactor
 public class RestrictUserCallbackProcessor implements Processor {
 
   private final TelegramClient telegramClient;
@@ -67,14 +66,13 @@ public class RestrictUserCallbackProcessor implements Processor {
     JsonObject jsonObject = JsonParser.parseString(rawJson).getAsJsonObject();
 
     long spamMessageChatId = Long.parseLong(jsonObject.get("chatId").toString());
-    int spamMessageId = Integer.parseInt(jsonObject.get("messageId").toString());
-    long replyToUserId = Long.parseLong(jsonObject.get("replyToUserId").toString());
+    long senderUserId = Long.parseLong(jsonObject.get("senderUserId").toString());
 
     try {
       RestrictChatMember restrictChatMember = RestrictChatMember
           .builder()
           .chatId(spamMessageChatId)
-          .userId(replyToUserId)
+          .userId(senderUserId)
           .permissions(ChatPermissions
               .builder()
               .canSendMessages(false)
@@ -121,15 +119,6 @@ public class RestrictUserCallbackProcessor implements Processor {
           .build());
     } catch (TelegramApiException e) {
       String description = e.getMessage();
-//      // TODO: just do it also for restrict callback handler :)
-//      if (description != null && description.contains("user can't be restricted")) {
-//        telegramClient.execute(AnswerCallbackQuery
-//            .builder()
-//            .callbackQueryId(callbackQuery.getId())
-//            .text("⚠️ Помилка видалення повідомлення. Telegram не дозволяє ботам видаляти повідомлення, з моменту відправлення яких пройшло більше 48 годин.")
-//            .showAlert(true)
-//            .build());
-//      } else {
       try {
         telegramClient.execute(AnswerCallbackQuery
             .builder()

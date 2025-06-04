@@ -3,7 +3,6 @@ package com.fransua.spamguardbot.handler.processor;
 import com.fransua.spamguardbot.handler.core.Processor;
 import com.fransua.spamguardbot.service.AdsDetectorService;
 import com.fransua.spamguardbot.service.BotConfigService;
-import com.fransua.spamguardbot.util.UpdateContext;
 import com.fransua.spamguardbot.util.UpdateUtils;
 import java.util.Optional;
 import org.telegram.telegrambots.meta.api.methods.ForwardMessage;
@@ -13,7 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-// TODO: refactor
 public class ProfanitySpamProcessor implements Processor {
 
   private final TelegramClient telegramClient;

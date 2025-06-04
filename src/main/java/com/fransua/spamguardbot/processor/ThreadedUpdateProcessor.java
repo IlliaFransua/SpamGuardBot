@@ -23,8 +23,7 @@ public class ThreadedUpdateProcessor implements UpdateProcessor {
   public ThreadedUpdateProcessor(
       ExecutorService executorService,
       TelegramClient telegramClient,
-      List<UpdateHandler> updateHandlerList
-  ) {
+      List<UpdateHandler> updateHandlerList) {
     this.executorService = executorService;
     this.telegramClient = telegramClient;
     this.updateHandlerList = updateHandlerList;
@@ -48,10 +47,8 @@ public class ThreadedUpdateProcessor implements UpdateProcessor {
     UpdateContext.setParsedUpdate(new ParsedUpdate(update));
     try {
       updateHandlerList.stream()
-          .filter(handler ->
-              SafeHandlerWrapper.safeCanHandle(handler, update))
-          .forEach(handler ->
-              SafeHandlerWrapper.safeHandle(handler, telegramClient, update));
+          .filter(handler -> SafeHandlerWrapper.safeCanHandle(handler, update))
+          .forEach(handler -> SafeHandlerWrapper.safeHandle(handler, telegramClient, update));
     } finally {
       UpdateContext.clear();
     }

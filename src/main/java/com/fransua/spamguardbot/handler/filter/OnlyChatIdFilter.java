@@ -21,6 +21,9 @@ public class OnlyChatIdFilter extends Filter {
 
   static boolean isUpdateFromTargetChat(Update update, long targetChatId) {
     Optional<Message> optionalMessage = UpdateUtils.extractMessage(update);
+    if (optionalMessage.isEmpty()) {
+      optionalMessage = UpdateUtils.extractCallbackQueryMessage(update);
+    }
     return optionalMessage
         .map(Message::getChat)
         .map(chat -> chat.getId() == targetChatId)

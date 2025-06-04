@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,7 +13,6 @@ import java.net.http.HttpResponse;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: refactor
 public class AdsDetectorService implements SpamDetector {
 
   private static final HttpClient httpClient = HttpClient.newHttpClient();

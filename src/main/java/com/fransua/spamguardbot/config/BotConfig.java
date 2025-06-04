@@ -1,7 +1,5 @@
 package com.fransua.spamguardbot.config;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -18,7 +16,7 @@ public class BotConfig {
 
   public static final String SpamGuardBot_USERNAME = System.getenv("SpamGuardBot_USERNAME");
 
-  public static final long[] adminTeam = {6794636124L, 456L};
+  public static final long[] adminTeam = { 6794636124L, 456L };
 
   public static boolean isUserAdmin(long userId) {
     return LongStream.of(adminTeam).anyMatch(adminId -> adminId == userId);
@@ -148,8 +146,6 @@ public class BotConfig {
       InlineKeyboardButton muteReporterInChatButton) {
     List<InlineKeyboardRow> keyboard = new ArrayList<>();
     keyboard.add(new InlineKeyboardRow(deleteMessageButton));
-    // TODO: create banReportButton
-    // keyboard.add(new InlineKeyboardRow(banReporterButton));
     keyboard.add(new InlineKeyboardRow(muteReporterInChatButton));
     return InlineKeyboardMarkup
         .builder()
@@ -174,9 +170,6 @@ public class BotConfig {
     public static final String REPORT_COMMAND_WITHOUT_PREFIX = "report";
 
     public static class Admin {
-      // TODO: add prefix to properties
-//    /// setPrefix
-//    public static final String SET_PREFIX_COMMAND = COMMAND_PREFIX + "setPrefix";
 
       /// setLogChannel
       public static final String SET_LOG_CHANNEL_COMMAND = COMMAND_PREFIX + "setLogChannel";

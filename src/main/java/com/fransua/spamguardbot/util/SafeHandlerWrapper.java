@@ -9,8 +9,7 @@ public class SafeHandlerWrapper {
   public static void safeHandle(
       UpdateHandler handler,
       TelegramClient telegramClient,
-      Update update
-  ) {
+      Update update) {
     try {
       handler.handle(telegramClient, update);
     } catch (Exception e) {
@@ -23,8 +22,7 @@ public class SafeHandlerWrapper {
 
   public static boolean safeCanHandle(
       UpdateHandler handler,
-      Update update
-  ) {
+      Update update) {
     try {
       return handler.canHandle(update);
     } catch (Exception e) {

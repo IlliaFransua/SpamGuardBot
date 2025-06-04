@@ -8,11 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-// TODO: refactor
 public class BotConfigService {
 
-  private static final Path PROPERTIES_PATH =
-      Paths.get("src", "main", "resources", "application.properties");
+  private static final Path PROPERTIES_PATH = Paths.get("src", "main", "resources", "application.properties");
 
   private static final String LOG_CHANNEL_ID_PROPERTY_KEY = "log.channel.id";
 

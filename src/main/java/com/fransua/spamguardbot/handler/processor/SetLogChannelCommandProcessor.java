@@ -14,7 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberAdministr
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-// TODO: refactor
 public class SetLogChannelCommandProcessor implements Processor {
 
   private final TelegramClient telegramClient;
@@ -56,22 +55,22 @@ public class SetLogChannelCommandProcessor implements Processor {
       String answer;
       if (member instanceof ChatMemberAdministrator admin) {
         answer = String.format("""
-                ✅ *Бот — АДМІНІСТРАТОР. Права:*
-                🔧 *Зміна інформації про чат:* %s
-                🗑 *Видалення повідомлень:* %s
-                🗄 *Видалення історій:* %s
-                ✏️ *Редагування повідомлень інших:* %s
-                📝 *Редагування історій:* %s
-                👥 *Запрошення користувачів:* %s
-                ⚙️ *Управління чатом:* %s
-                📹 *Управління відеочатами:* %s
-                📌 *Закріплення повідомлень:* %s
-                📢 *Постинг у каналі:* %s
-                📖 *Постинг історій:* %s
-                🚀 *Просування учасників:* %s
-                🔒 *Обмеження користувачів:* %s
-                🔑 *Редагування прав адміністратора:* %s
-                🗂 *Управління темами:* %s""",
+            ✅ *Бот — АДМІНІСТРАТОР. Права:*
+            🔧 *Зміна інформації про чат:* %s
+            🗑 *Видалення повідомлень:* %s
+            🗄 *Видалення історій:* %s
+            ✏️ *Редагування повідомлень інших:* %s
+            📝 *Редагування історій:* %s
+            👥 *Запрошення користувачів:* %s
+            ⚙️ *Управління чатом:* %s
+            📹 *Управління відеочатами:* %s
+            📌 *Закріплення повідомлень:* %s
+            📢 *Постинг у каналі:* %s
+            📖 *Постинг історій:* %s
+            🚀 *Просування учасників:* %s
+            🔒 *Обмеження користувачів:* %s
+            🔑 *Редагування прав адміністратора:* %s
+            🗂 *Управління темами:* %s""",
             admin.getCanChangeInfo(),
             admin.getCanDeleteMessages(),
             admin.getCanDeleteStories(),

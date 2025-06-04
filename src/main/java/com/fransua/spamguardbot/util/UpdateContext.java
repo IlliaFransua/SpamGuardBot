@@ -1,7 +1,5 @@
 package com.fransua.spamguardbot.util;
 
-import org.telegram.telegrambots.meta.api.objects.message.Message;
-
 public class UpdateContext {
 
   private static final ThreadLocal<ParsedUpdate> currentUpdate = new ThreadLocal<>();
@@ -22,4 +20,3 @@ public class UpdateContext {
     currentUpdate.remove();
   }
 }
-

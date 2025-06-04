@@ -17,7 +17,6 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-// TODO: TelegramApiException single point: have a common utility that will centrally handle TelegramApiException
 public class ReportCommandProcessor implements Processor {
 
   private final TelegramClient telegramClient;
@@ -63,7 +62,6 @@ public class ReportCommandProcessor implements Processor {
     return fullCommandText.substring(BotConfig.Commands.REPORT_COMMAND.length());
   }
 
-  // TODO: refactor
   private record ReportMessageDetails(
       // Fields from the message that triggered report
       int messageId,
@@ -79,8 +77,7 @@ public class ReportCommandProcessor implements Processor {
       long replyToUserId,
       String replyToFirstName,
       String replyToLastName,
-      String replyToUserName
-  ) {
+      String replyToUserName) {
 
   }
 
@@ -107,8 +104,7 @@ public class ReportCommandProcessor implements Processor {
         repliedMessage.getFrom().getId(),
         repliedMessage.getFrom().getFirstName(),
         repliedMessage.getFrom().getLastName(),
-        repliedMessage.getFrom().getUserName()
-    );
+        repliedMessage.getFrom().getUserName());
   }
 
   private Message forwardReportedMessage(ReportMessageDetails details,
@@ -136,27 +132,27 @@ public class ReportCommandProcessor implements Processor {
     String hiddenJson = gson.toJson(jsonObject);
 
     return String.format("""
-            ⌚️ <b>%s</b>
-            
-            💎 <a href="%s">Посилання на повідомлення</a>
-            
-            🌚 <span class="tg-spoiler">%s</span>
-            
-            🏆 Спрацювала команда <code>/report</code>
-            
-            📮 <i>Поступила скарга від:</i>
-            Ім'я: <b>%s</b>
-            Прізвище: <b>%s</b>
-            username: <b>@%s</b>
-            
-            📍 <i>Поступила скарга на:</i>
-            Ім'я: <b>%s</b>
-            Прізвище: <b>%s</b>
-            username: <b>@%s</b>
-            
-            📝 <i>Записка від скаржника:</i>
-            <code>%s</code>
-            """, timeString, msgLink, hiddenJson,
+        ⌚️ <b>%s</b>
+
+        💎 <a href="%s">Посилання на повідомлення</a>
+
+        🌚 <span class="tg-spoiler">%s</span>
+
+        🏆 Спрацювала команда <code>/report</code>
+
+        📮 <i>Поступила скарга від:</i>
+        Ім'я: <b>%s</b>
+        Прізвище: <b>%s</b>
+        username: <b>@%s</b>
+
+        📍 <i>Поступила скарга на:</i>
+        Ім'я: <b>%s</b>
+        Прізвище: <b>%s</b>
+        username: <b>@%s</b>
+
+        📝 <i>Записка від скаржника:</i>
+        <code>%s</code>
+        """, timeString, msgLink, hiddenJson,
         details.senderFirstName(),
         details.senderLastName(),
         details.senderUserName(),
