@@ -1,3 +1,5 @@
+> ⚠️ Warning: The data presented in this README is outdated and does not reflect the current level of spam detection accuracy. A lot of work has been done and many problems have been solved, but the information in this file is still old.
+
 # SpamGuardBot
 
 A Telegram bot that uses machine learning to detect and remove spam messages in real time. It helps group admins keep chats clean by automatically filtering unwanted ads and spam. The bot analyzes each message, calculates spam probability, and decides whether to delete or keep it, improving chat quality.
