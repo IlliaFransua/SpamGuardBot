@@ -2,6 +2,12 @@
 
 An AI-powered Telegram bot that automatically detects and removes spam messages from chats. Built with Java backend, Python ML model, and clean architecture using multiple design patterns. Achieved 98/100 points as diploma project.
 
+## 📁 Project Structure
+
+This repository contains the **Java backend**. The **Python ML model** is located in a separate repository:
+
+🔗 **ML Service:** [SpamGuardService](https://github.com/IlliaFransua/SpamGuardService)
+
 ## 🎥 Demo Video
 
 Click to watch the bot in action:
