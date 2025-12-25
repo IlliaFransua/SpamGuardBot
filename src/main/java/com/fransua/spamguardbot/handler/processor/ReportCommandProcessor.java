@@ -35,7 +35,7 @@ public class ReportCommandProcessor implements Processor {
     String note = extractReportNote(fullCommandText);
     ReportMessageDetails details = extractMessageDetails(message);
 
-    String userResponse = "*✅ Скарга надіслана.*";
+    String userResponse = "*✅ Complaint sent.*";
     try {
       long logChannelId = botConfigService.getLogChannelId();
       synchronized (this) {
@@ -45,10 +45,10 @@ public class ReportCommandProcessor implements Processor {
       }
     } catch (TelegramApiException e) {
       e.printStackTrace();
-      userResponse = "*❌ Скарга не надіслана через помилку.*";
+      userResponse = "*❌ Complaint not sent due to an error.*";
     } catch (Exception e) {
       e.printStackTrace();
-      userResponse = "*❌ Скарга не надіслана через невідому помилку.*";
+      userResponse = "*❌ Complaint not sent due to an unknown error.*";
     } finally {
       try {
         cleanUpAndNotifyUser(details, userResponse);
@@ -78,7 +78,6 @@ public class ReportCommandProcessor implements Processor {
       String replyToFirstName,
       String replyToLastName,
       String replyToUserName) {
-
   }
 
   private ReportMessageDetails extractMessageDetails(Message message) {
@@ -107,15 +106,14 @@ public class ReportCommandProcessor implements Processor {
         repliedMessage.getFrom().getUserName());
   }
 
-  private Message forwardReportedMessage(ReportMessageDetails details,
-      long logChannelId)
+  private Message forwardReportedMessage(ReportMessageDetails details, long logChannelId)
       throws TelegramApiException {
-    return telegramClient.execute(ForwardMessage
-        .builder()
-        .messageId(details.replyToMessageId())
-        .fromChatId(details.repliedMessageChatId())
-        .chatId(logChannelId)
-        .build());
+    return telegramClient.execute(
+        ForwardMessage.builder()
+            .messageId(details.replyToMessageId())
+            .fromChatId(details.repliedMessageChatId())
+            .chatId(logChannelId)
+            .build());
   }
 
   private String buildReportTextForLog(ReportMessageDetails details, String note) {
@@ -124,35 +122,38 @@ public class ReportCommandProcessor implements Processor {
     String timeString = currentTimeUtc.format(formatter);
 
     String internalId = String.valueOf(details.chatId).replaceFirst("^-100", "");
-    String msgLink = String.format("https://t.me/c/%s/%d", internalId,
-        details.replyToMessageId());
+    String msgLink = String.format("https://t.me/c/%s/%d", internalId, details.replyToMessageId());
 
     JsonObject jsonObject = getJsonObject(details);
 
     String hiddenJson = gson.toJson(jsonObject);
 
-    return String.format("""
-        ⌚️ <b>%s</b>
+    return String.format(
+        """
+            ⌚️ <b>%s</b>
 
-        💎 <a href="%s">Посилання на повідомлення</a>
+            💎 <a href="%s">Link to message</a>
 
-        🌚 <span class="tg-spoiler">%s</span>
+            🌚 <span class="tg-spoiler">%s</span>
 
-        🏆 Спрацювала команда <code>/report</code>
+            🏆 The command <code>/report</code> was triggered
 
-        📮 <i>Поступила скарга від:</i>
-        Ім'я: <b>%s</b>
-        Прізвище: <b>%s</b>
-        username: <b>@%s</b>
+            📮 <i>Complaint received from:</i>
+            Name: <b>%s</b>
+            Surname: <b>%s</b>
+            username: <b>@%s</b>
 
-        📍 <i>Поступила скарга на:</i>
-        Ім'я: <b>%s</b>
-        Прізвище: <b>%s</b>
-        username: <b>@%s</b>
+            📍 <i>Complaint received about:</i>
+            Name: <b>%s</b>
+            Surname: <b>%s</b>
+            username: <b>@%s</b>
 
-        📝 <i>Записка від скаржника:</i>
-        <code>%s</code>
-        """, timeString, msgLink, hiddenJson,
+            📝 <i>Note from the complainant:</i>
+            <code>%s</code>
+            """,
+        timeString,
+        msgLink,
+        hiddenJson,
         details.senderFirstName(),
         details.senderLastName(),
         details.senderUserName(),
@@ -176,8 +177,7 @@ public class ReportCommandProcessor implements Processor {
 
     // Fields from the message that was replied
     jsonObject.addProperty("replyToMessageId", details.replyToMessageId());
-    jsonObject.addProperty("repliedMessageChatId",
-        details.repliedMessageChatId());
+    jsonObject.addProperty("repliedMessageChatId", details.repliedMessageChatId());
     jsonObject.addProperty("replyToUserId", details.replyToUserId());
     jsonObject.addProperty("replyToFirstName", details.replyToFirstName());
     jsonObject.addProperty("replyToLastName", details.replyToLastName());
@@ -186,31 +186,28 @@ public class ReportCommandProcessor implements Processor {
     return jsonObject;
   }
 
-  private void sendReportToLogChannel(String reportText, int replyToMessageId,
-      long logChannelId) throws TelegramApiException {
-    telegramClient.execute(SendMessage
-        .builder()
-        .text(reportText)
-        .replyToMessageId(replyToMessageId)
-        .replyMarkup(BotConfig.createInlineKeyboardMarkup(false, false, false))
-        .chatId(logChannelId)
-        .parseMode("HTML")
-        .build());
+  private void sendReportToLogChannel(String reportText, int replyToMessageId, long logChannelId)
+      throws TelegramApiException {
+    telegramClient.execute(
+        SendMessage.builder()
+            .text(reportText)
+            .replyToMessageId(replyToMessageId)
+            .replyMarkup(BotConfig.createInlineKeyboardMarkup(false, false, false))
+            .chatId(logChannelId)
+            .parseMode("HTML")
+            .build());
   }
 
   private void cleanUpAndNotifyUser(ReportMessageDetails details, String userResponse)
       throws TelegramApiException {
-    telegramClient.execute(DeleteMessage
-        .builder()
-        .chatId(details.chatId())
-        .messageId(details.messageId())
-        .build());
+    telegramClient.execute(
+        DeleteMessage.builder().chatId(details.chatId()).messageId(details.messageId()).build());
 
-    telegramClient.execute(SendMessage
-        .builder()
-        .chatId(details.chatId())
-        .text(userResponse)
-        .parseMode("Markdown")
-        .build());
+    telegramClient.execute(
+        SendMessage.builder()
+            .chatId(details.chatId())
+            .text(userResponse)
+            .parseMode("Markdown")
+            .build());
   }
 }

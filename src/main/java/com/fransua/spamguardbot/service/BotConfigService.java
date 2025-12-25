@@ -10,7 +10,8 @@ import java.util.Properties;
 
 public class BotConfigService {
 
-  private static final Path PROPERTIES_PATH = Paths.get("src", "main", "resources", "application.properties");
+  private static final Path PROPERTIES_PATH = Paths.get("src", "main", "resources",
+      "application.properties");
 
   private static final String LOG_CHANNEL_ID_PROPERTY_KEY = "log.channel.id";
 
@@ -93,6 +94,7 @@ public class BotConfigService {
   }
 
   private void saveChatIdToProperties(long newChatId) {
+    System.out.println("here");
     Properties props = new Properties();
     try (InputStream in = Files.newInputStream(PROPERTIES_PATH)) {
       props.load(in);

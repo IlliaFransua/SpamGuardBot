@@ -17,8 +17,7 @@ public class ProfanitySpamProcessor implements Processor {
   private final TelegramClient telegramClient;
   private final BotConfigService botConfigService;
 
-  public ProfanitySpamProcessor(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+  public ProfanitySpamProcessor(TelegramClient telegramClient, BotConfigService botConfigService) {
     this.telegramClient = telegramClient;
     this.botConfigService = botConfigService;
   }
@@ -38,61 +37,56 @@ public class ProfanitySpamProcessor implements Processor {
     AdsDetectorService adsDetector = new AdsDetectorService();
     if (adsDetector.isSpam(text)) {
       String answer = """
-          *👊 А це я видалю*
+          *👊 And I delete this*
           """;
       try {
-        telegramClient.execute(SendMessage
-            .builder()
-            .chatId(msg.getChatId())
-            .replyToMessageId(msg.getMessageId())
-            .text(answer)
-            .parseMode("Markdown")
-            .build());
+        telegramClient.execute(
+            SendMessage.builder()
+                .chatId(msg.getChatId())
+                .replyToMessageId(msg.getMessageId())
+                .text(answer)
+                .parseMode("Markdown")
+                .build());
       } catch (Exception e) {
         e.printStackTrace();
-
       }
 
       BotConfigService configService = new BotConfigService();
       long logChannelId = configService.getLogChannelId();
       Message sentMessage = null;
       try {
-        sentMessage = telegramClient.execute(ForwardMessage
-            .builder()
-            .chatId(logChannelId)
-            .fromChatId(msg.getChatId())
-            .messageId(msg.getMessageId())
-            .build());
+        sentMessage = telegramClient.execute(
+            ForwardMessage.builder()
+                .chatId(logChannelId)
+                .fromChatId(msg.getChatId())
+                .messageId(msg.getMessageId())
+                .build());
       } catch (Exception e) {
         e.printStackTrace();
       }
 
       answer = """
-          *🔍 Повідомлення було видалено автоматично.*
+          *🔍 Message was deleted automatically.*
           """;
       if (sentMessage != null) {
         try {
-          telegramClient.execute(SendMessage
-              .builder()
-              .chatId(logChannelId)
-              .replyToMessageId(sentMessage.getMessageId())
-              .text(answer)
-              .parseMode("Markdown")
-              .build());
+          telegramClient.execute(
+              SendMessage.builder()
+                  .chatId(logChannelId)
+                  .replyToMessageId(sentMessage.getMessageId())
+                  .text(answer)
+                  .parseMode("Markdown")
+                  .build());
         } catch (Exception e) {
           e.printStackTrace();
         }
       }
       try {
-        telegramClient.execute(DeleteMessage
-            .builder()
-            .chatId(msg.getChatId())
-            .messageId(msg.getMessageId())
-            .build());
+        telegramClient.execute(
+            DeleteMessage.builder().chatId(msg.getChatId()).messageId(msg.getMessageId()).build());
       } catch (Exception e) {
         e.printStackTrace();
       }
-
     }
   }
 }

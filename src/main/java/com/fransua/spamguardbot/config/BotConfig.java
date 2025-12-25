@@ -1,12 +1,11 @@
 package com.fransua.spamguardbot.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.LongStream;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BotConfig {
 
@@ -33,21 +32,15 @@ public class BotConfig {
   }
 
   private static String getCorrectlyTextForDeleteMessageButton(boolean isDeleted) {
-    return isDeleted
-        ? "✅ Повідомлення порушника видалено"
-        : "🗑 Видалити повідомлення порушника";
+    return isDeleted ? "✅ Offender's message has been deleted" : "🗑 Delete offender's message";
   }
 
   private static String getCorrectlyTextForBanReporterButton(boolean isReporterBanned) {
-    return isReporterBanned
-        ? "🚫 Заявник заблокований"
-        : "⛔ Заблокувати заявника";
+    return isReporterBanned ? "🚫 Reporter has been banned" : "⛔ Ban reporter";
   }
 
   private static String getCorrectlyTextForMuteReporterButton(boolean isReporterMuted) {
-    return isReporterMuted
-        ? "🔕 Заявник зам'ючен"
-        : "🔇 Зам'ютити заявника в чаті на 3 години";
+    return isReporterMuted ? "🔕 Reporter has been muted" : "🔇 Mute reporter in chat for 3 hours";
   }
 
   private static final String MESSAGE_DELETED = "message_deleted";
@@ -63,21 +56,15 @@ public class BotConfig {
   private static final String MUTE_REPORTER = "mute_reporter";
 
   public static String getDeleteMessageCallbackData(boolean isDeleted) {
-    return isDeleted
-        ? MESSAGE_DELETED
-        : DELETE_MESSAGE;
+    return isDeleted ? MESSAGE_DELETED : DELETE_MESSAGE;
   }
 
   public static String getBanReporterCallbackData(boolean isReporterBanned) {
-    return isReporterBanned
-        ? REPORTER_BANNED
-        : BAN_REPORTER;
+    return isReporterBanned ? REPORTER_BANNED : BAN_REPORTER;
   }
 
   public static String getMuteReporterCallbackData(boolean isReporterMuted) {
-    return isReporterMuted
-        ? REPORTER_MUTED
-        : MUTE_REPORTER;
+    return isReporterMuted ? REPORTER_MUTED : MUTE_REPORTER;
   }
 
   public static List<String> getDeleteMessageCallbackDataList() {
@@ -110,9 +97,7 @@ public class BotConfig {
   }
 
   public static InlineKeyboardMarkup createInlineKeyboardMarkup(
-      boolean isDeleted,
-      boolean isReporterBanned,
-      boolean isReporterMuted) {
+      boolean isDeleted, boolean isReporterBanned, boolean isReporterMuted) {
     return buildInlineKeyboardMarkup(
         BotConfig.buildDeleteMessageButton(isDeleted),
         BotConfig.buildBanReporterButton(isReporterBanned),
@@ -147,10 +132,7 @@ public class BotConfig {
     List<InlineKeyboardRow> keyboard = new ArrayList<>();
     keyboard.add(new InlineKeyboardRow(deleteMessageButton));
     keyboard.add(new InlineKeyboardRow(muteReporterInChatButton));
-    return InlineKeyboardMarkup
-        .builder()
-        .keyboard(keyboard)
-        .build();
+    return InlineKeyboardMarkup.builder().keyboard(keyboard).build();
   }
 
   public static class Commands {
@@ -178,7 +160,6 @@ public class BotConfig {
       /// setChatCommand
       public static final String SET_CHAT_COMMAND = COMMAND_PREFIX + "setChat";
       public static final String SET_CHAT_COMMAND_WITHOUT_PREFIX = "setChat";
-
     }
   }
 }

@@ -16,39 +16,41 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 public class FilterProcessorFactory {
 
-  private FilterProcessorFactory() {
-  }
+  private FilterProcessorFactory() {}
 
-  public static Handler createProfanitySpamHandler(TelegramClient telegramClient,
-      BotConfigService configService) {
-    Filter filter = Filter.builder()
-        .add(new NotFilter(new OnlyAdminFilter(telegramClient, configService.getChatId())))
-        .add(new OnlyChatIdFilter(configService.getChatId()))
-        .build();
+  public static Handler createProfanitySpamHandler(
+      TelegramClient telegramClient, BotConfigService configService) {
+    Filter filter =
+        Filter.builder()
+            .add(new NotFilter(new OnlyAdminFilter(telegramClient, configService.getChatId())))
+            .add(new OnlyChatIdFilter(configService.getChatId()))
+            .build();
 
     Processor processor = new ProfanitySpamProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filter, processor);
   }
 
-  public static Handler createDeleteMessageQueryHandler(TelegramClient telegramClient,
-      BotConfigService configService) {
-    Filter filter = Filter.builder()
-        .add(new OnlyCallbackQueryFilter())
-        .add(new OnlyAdminFilter(telegramClient, configService.getLogChannelId()))
-        .add(new OnlyChatIdFilter(configService.getLogChannelId()))
-        .build();
+  public static Handler createDeleteMessageQueryHandler(
+      TelegramClient telegramClient, BotConfigService configService) {
+    Filter filter =
+        Filter.builder()
+            .add(new OnlyCallbackQueryFilter())
+            .add(new OnlyAdminFilter(telegramClient, configService.getLogChannelId()))
+            .add(new OnlyChatIdFilter(configService.getLogChannelId()))
+            .build();
 
     Processor processor = new DeleteMessageQueryProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filter, processor);
   }
 
-  public static Handler createRestrictUserCallbackHandler(TelegramClient telegramClient,
-      BotConfigService configService) {
-    Filter filter = Filter.builder()
-        .add(new OnlyCallbackQueryFilter())
-        .add(new OnlyAdminFilter(telegramClient, configService.getLogChannelId()))
-        .add(new OnlyChatIdFilter(configService.getLogChannelId()))
-        .build();
+  public static Handler createRestrictUserCallbackHandler(
+      TelegramClient telegramClient, BotConfigService configService) {
+    Filter filter =
+        Filter.builder()
+            .add(new OnlyCallbackQueryFilter())
+            .add(new OnlyAdminFilter(telegramClient, configService.getLogChannelId()))
+            .add(new OnlyChatIdFilter(configService.getLogChannelId()))
+            .build();
 
     Processor processor = new RestrictUserCallbackProcessor(telegramClient, configService);
     return new FilterProcessorHandler(filter, processor);

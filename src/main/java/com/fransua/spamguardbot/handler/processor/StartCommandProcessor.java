@@ -30,16 +30,16 @@ public class StartCommandProcessor implements Processor {
     String text = UpdateUtils.extractAnyTextFromMessage(actualMessage).orElse("");
     if (text.startsWith(BotConfig.Commands.START_COMMAND)) {
       String answer = """
-          *⚔️ Привіт путник*
+          *⚔️ Greetings, traveler*
           """;
       try {
-        telegramClient.execute(SendMessage
-            .builder()
-            .chatId(actualMessage.getChatId())
-            .text(answer)
-            .replyToMessageId(actualMessage.getMessageId())
-            .parseMode("Markdown")
-            .build());
+        telegramClient.execute(
+            SendMessage.builder()
+                .chatId(actualMessage.getChatId())
+                .text(answer)
+                .replyToMessageId(actualMessage.getMessageId())
+                .parseMode("Markdown")
+                .build());
       } catch (Exception e) {
         e.printStackTrace();
       }

@@ -26,8 +26,8 @@ public class DeleteMessageQueryProcessor implements Processor {
   private final BotConfigService botConfigService;
   private final Gson gson = new Gson();
 
-  public DeleteMessageQueryProcessor(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+  public DeleteMessageQueryProcessor(
+      TelegramClient telegramClient, BotConfigService botConfigService) {
     this.telegramClient = telegramClient;
     this.botConfigService = botConfigService;
   }
@@ -44,12 +44,12 @@ public class DeleteMessageQueryProcessor implements Processor {
 
     if (callbackQueryData.equals(BotConfig.getDeleteMessageCallbackData(true))) {
       try {
-        telegramClient.execute(AnswerCallbackQuery
-            .builder()
-            .callbackQueryId(callbackQuery.getId())
-            .text("🙉 Повідомлення вже видалено. Це дію скасувати неможливо.")
-            .showAlert(true)
-            .build());
+        telegramClient.execute(
+            AnswerCallbackQuery.builder()
+                .callbackQueryId(callbackQuery.getId())
+                .text("🙉 The message has already been deleted. This action cannot be undone.")
+                .showAlert(true)
+                .build());
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -69,18 +69,15 @@ public class DeleteMessageQueryProcessor implements Processor {
     int spamMessageId = jsonObject.get("replyToMessageId").getAsInt();
 
     try {
-      telegramClient.execute(DeleteMessage
-          .builder()
-          .chatId(spamMessageChatId)
-          .messageId(spamMessageId)
-          .build());
+      telegramClient.execute(
+          DeleteMessage.builder().chatId(spamMessageChatId).messageId(spamMessageId).build());
 
-      telegramClient.execute(AnswerCallbackQuery
-          .builder()
-          .callbackQueryId(callbackQuery.getId())
-          .text("✅ Повідомлення порушника видалено.")
-          .showAlert(false)
-          .build());
+      telegramClient.execute(
+          AnswerCallbackQuery.builder()
+              .callbackQueryId(callbackQuery.getId())
+              .text("✅ The offender's message has been deleted.")
+              .showAlert(false)
+              .build());
 
       InlineKeyboardMarkup inlineKeyboardMarkup = callbackQueryMessageessage.getReplyMarkup();
 
@@ -98,17 +95,17 @@ public class DeleteMessageQueryProcessor implements Processor {
         }
       }
 
-      telegramClient.execute(EditMessageReplyMarkup
-          .builder()
-          .chatId(callbackQueryMessageessage.getChatId())
-          .messageId(callbackQueryMessageessage.getMessageId())
-          .replyMarkup(
-              BotConfig.createInlineKeyboardMarkup(wasDeleted, wasReporterBanned, wasReporterMuted))
-          .build());
+      telegramClient.execute(
+          EditMessageReplyMarkup.builder()
+              .chatId(callbackQueryMessageessage.getChatId())
+              .messageId(callbackQueryMessageessage.getMessageId())
+              .replyMarkup(
+                  BotConfig.createInlineKeyboardMarkup(
+                      wasDeleted, wasReporterBanned, wasReporterMuted))
+              .build());
 
       Message replyToMessage = (Message) update.getCallbackQuery().getMessage();
-      String messageText = UpdateUtils.extractAnyTextFromMessage(replyToMessage.getReplyToMessage())
-          .orElse("");
+      String messageText = UpdateUtils.extractAnyTextFromMessage(replyToMessage.getReplyToMessage()).orElse("");
       try {
         SpamSaver.save(messageText);
       } catch (Exception ex) {
@@ -119,20 +116,21 @@ public class DeleteMessageQueryProcessor implements Processor {
 
       try {
         if (description != null && description.contains("message can't be deleted")) {
-          telegramClient.execute(AnswerCallbackQuery
-              .builder()
-              .callbackQueryId(callbackQuery.getId())
-              .text(
-                  "⚠️ Помилка видалення повідомлення. Telegram не дозволяє ботам видаляти повідомлення, з моменту відправлення яких пройшло більше 48 годин.")
-              .showAlert(true)
-              .build());
+          telegramClient.execute(
+              AnswerCallbackQuery.builder()
+                  .callbackQueryId(callbackQuery.getId())
+                  .text(
+                      "⚠️ Error deleting message. Telegram does not allow bots to delete"
+                          + " messages that were sent more than 48 hours ago.")
+                  .showAlert(true)
+                  .build());
         } else {
-          telegramClient.execute(AnswerCallbackQuery
-              .builder()
-              .callbackQueryId(callbackQuery.getId())
-              .text("❌ Помилка: " + e.getMessage())
-              .showAlert(true)
-              .build());
+          telegramClient.execute(
+              AnswerCallbackQuery.builder()
+                  .callbackQueryId(callbackQuery.getId())
+                  .text("❌ Error: " + e.getMessage())
+                  .showAlert(true)
+                  .build());
         }
       } catch (Exception ex) {
         ex.printStackTrace();

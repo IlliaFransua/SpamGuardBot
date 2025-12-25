@@ -19,8 +19,8 @@ public class OnlySuperGroupMessageFilter extends Filter {
       return optionalMessage.map(Message::isSuperGroupMessage).orElse(false);
     }
 
-    Optional<Message> optionalCallbackQueryMessage = UpdateUtils.extractCallbackQueryMessage(
-        update);
+    Optional<Message> optionalCallbackQueryMessage =
+        UpdateUtils.extractCallbackQueryMessage(update);
     if (optionalCallbackQueryMessage.isPresent()) {
       return optionalCallbackQueryMessage.map(Message::isSuperGroupMessage).orElse(false);
     }

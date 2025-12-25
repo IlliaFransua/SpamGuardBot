@@ -19,8 +19,7 @@ public class SetChatCommandProcessor implements Processor {
   private final TelegramClient telegramClient;
   private final BotConfigService botConfigService;
 
-  public SetChatCommandProcessor(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+  public SetChatCommandProcessor(TelegramClient telegramClient, BotConfigService botConfigService) {
     this.telegramClient = telegramClient;
     this.botConfigService = botConfigService;
   }
@@ -41,11 +40,8 @@ public class SetChatCommandProcessor implements Processor {
       long chatId = msg.getChatId();
       int messageId = msg.getMessageId();
 
-      GetChatMember getChatMember = GetChatMember
-          .builder()
-          .chatId(chatId)
-          .userId(BotConfig.SpamGuardBot_ID)
-          .build();
+      GetChatMember getChatMember = GetChatMember.builder().chatId(chatId)
+          .userId(BotConfig.SpamGuardBot_ID).build();
       ChatMember member = null;
       try {
         member = telegramClient.execute(getChatMember);
@@ -54,27 +50,29 @@ public class SetChatCommandProcessor implements Processor {
       }
       String answer;
       if (member instanceof ChatMemberAdministrator admin) {
-        answer = String.format("""
-            ✅ *Бот — АДМІНІСТРАТОР. Права:*
-            🔧 *Зміна інформації про чат:* %s
-            🗑 *Видалення повідомлень:* %s
-            🗄 *Видалення історій:* %s
-            ✏️ *Редагування повідомлень інших:* %s
-            📝 *Редагування історій:* %s
-            👥 *Запрошення користувачів:* %s
-            ⚙️ *Управління чатом:* %s
-            📹 *Управління відеочатами:* %s
-            📌 *Закріплення повідомлень:* %s
-            📢 *Постинг у каналі:* %s
-            📖 *Постинг історій:* %s
-            🚀 *Просування учасників:* %s
-            🔒 *Обмеження користувачів:* %s
-            🔑 *Редагування прав адміністратора:* %s
-            🗂 *Управління темами:* %s""",
+        answer = String.format(
+            """
+                ✅ *Bot is an ADMIN. Rights:*
+                🔧 *Change chat info:* %s
+                🗑 *Delete messages:* %s
+                🗄 *Delete stories:* %s
+                ✏️ *Edit other's messages:* %s
+                📝 *Edit stories:* %s
+                👥 *Invite users:* %s
+                ⚙️ *Manage chat:* %s
+                📹 *Manage video chats:* %s
+                📌 *Pin messages:* %s
+                📢 *Post in channel:* %s
+                📖 *Post stories:* %s
+                🚀 *Promote members:* %s
+                🔒 *Restrict users:* %s
+                🔑 *Edit admin rights:* %s
+                🗂 *Manage topics:* %s\
+                """,
             admin.getCanChangeInfo(),
             admin.getCanDeleteMessages(),
             admin.getCanDeleteStories(),
-            admin.getCanEditMessages(),
+            admin.getCanChangeInfo(),
             admin.getCanEditStories(),
             admin.getCanInviteUsers(),
             admin.getCanManageChat(),
@@ -87,33 +85,30 @@ public class SetChatCommandProcessor implements Processor {
             admin.getCanBeEdited(),
             admin.getCanManageTopics());
       } else {
-        answer = "Підвищте мій рівень ролі до адміністратора. Такі вимоги Telegram, щоб у мене була можливість видаляти текстовий спам і обмежувати користувачів.";
+        answer =
+            "Promote my role to administrator. These are Telegram's requirements for me to be able"
+                + " to delete text spam and restrict users.";
       }
 
       try {
         botConfigService.setChatId(chatId);
 
-        telegramClient.execute(DeleteMessage
-            .builder()
-            .chatId(chatId)
-            .messageId(messageId)
-            .build());
+        telegramClient.execute(DeleteMessage.builder().chatId(chatId).messageId(messageId).build());
 
-        telegramClient.execute(SendMessage
-            .builder()
-            .chatId(chatId)
-            .text("Тепер цей чат буде фільтруватися на спам.")
-            .build());
+        telegramClient.execute(
+            SendMessage.builder()
+                .chatId(chatId)
+                .text("This chat will now be filtered for spam.")
+                .build());
       } catch (Exception e) {
         e.printStackTrace();
-        answer = "Через помилку відсутності ID чату, в якому потрібно фільтрувати спам – не вдалося надіслати репорт. Встановіть чат, в якому буде фільтрація спаму.";
+        answer =
+            "Due to the error of missing chat ID, the report could not be sent. Please set the chat"
+                + " where spam filtering will be enabled.";
+
         try {
-          telegramClient.execute(SendMessage
-              .builder()
-              .chatId(chatId)
-              .text(answer)
-              .parseMode("Markdown")
-              .build());
+          telegramClient.execute(
+              SendMessage.builder().chatId(chatId).text(answer).parseMode("Markdown").build());
         } catch (Exception ex) {
           ex.printStackTrace();
         }

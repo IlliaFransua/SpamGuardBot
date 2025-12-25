@@ -26,8 +26,8 @@ public class RestrictUserCallbackProcessor implements Processor {
   private final BotConfigService botConfigService;
   private final Gson gson = new Gson();
 
-  public RestrictUserCallbackProcessor(TelegramClient telegramClient,
-      BotConfigService botConfigService) {
+  public RestrictUserCallbackProcessor(
+      TelegramClient telegramClient, BotConfigService botConfigService) {
     this.telegramClient = telegramClient;
     this.botConfigService = botConfigService;
   }
@@ -44,12 +44,12 @@ public class RestrictUserCallbackProcessor implements Processor {
 
     if (callbackQueryData.equals(BotConfig.getMuteReporterCallbackData(true))) {
       try {
-        telegramClient.execute(AnswerCallbackQuery
-            .builder()
-            .callbackQueryId(callbackQuery.getId())
-            .text("🙉 Користувач вже зам'ючений на 3 години. Це дію скасувати неможливо.")
-            .showAlert(true)
-            .build());
+        telegramClient.execute(
+            AnswerCallbackQuery.builder()
+                .callbackQueryId(callbackQuery.getId())
+                .text("🙉 The user is already muted for 3 hours. This action cannot be undone.")
+                .showAlert(true)
+                .build());
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -69,30 +69,29 @@ public class RestrictUserCallbackProcessor implements Processor {
     long senderUserId = Long.parseLong(jsonObject.get("senderUserId").toString());
 
     try {
-      RestrictChatMember restrictChatMember = RestrictChatMember
-          .builder()
+      RestrictChatMember restrictChatMember = RestrictChatMember.builder()
           .chatId(spamMessageChatId)
           .userId(senderUserId)
-          .permissions(ChatPermissions
-              .builder()
-              .canSendMessages(false)
-              .canSendPolls(false)
-              .canSendOtherMessages(false)
-              .canAddWebPagePreviews(false)
-              .canChangeInfo(false)
-              .canInviteUsers(false)
-              .canPinMessages(false)
-              .build())
+          .permissions(
+              ChatPermissions.builder()
+                  .canSendMessages(false)
+                  .canSendPolls(false)
+                  .canSendOtherMessages(false)
+                  .canAddWebPagePreviews(false)
+                  .canChangeInfo(false)
+                  .canInviteUsers(false)
+                  .canPinMessages(false)
+                  .build())
           .untilDate((int) Instant.now().getEpochSecond() + 3 * 60 * 60)
           .build();
       telegramClient.execute(restrictChatMember);
 
-      telegramClient.execute(AnswerCallbackQuery
-          .builder()
-          .callbackQueryId(callbackQuery.getId())
-          .text("✅ Порушник зам'ючен на наступні 3 години.")
-          .showAlert(false)
-          .build());
+      telegramClient.execute(
+          AnswerCallbackQuery.builder()
+              .callbackQueryId(callbackQuery.getId())
+              .text("✅ Offender muted for the next 3 hours.")
+              .showAlert(false)
+              .build());
 
       InlineKeyboardMarkup inlineKeyboardMarkup = callbackQueryMessageessage.getReplyMarkup();
 
@@ -110,22 +109,23 @@ public class RestrictUserCallbackProcessor implements Processor {
         }
       }
 
-      telegramClient.execute(EditMessageReplyMarkup
-          .builder()
-          .chatId(callbackQueryMessageessage.getChatId())
-          .messageId(callbackQueryMessageessage.getMessageId())
-          .replyMarkup(
-              BotConfig.createInlineKeyboardMarkup(wasDeleted, wasReporterBanned, wasReporterMuted))
-          .build());
+      telegramClient.execute(
+          EditMessageReplyMarkup.builder()
+              .chatId(callbackQueryMessageessage.getChatId())
+              .messageId(callbackQueryMessageessage.getMessageId())
+              .replyMarkup(
+                  BotConfig.createInlineKeyboardMarkup(
+                      wasDeleted, wasReporterBanned, wasReporterMuted))
+              .build());
     } catch (TelegramApiException e) {
       String description = e.getMessage();
       try {
-        telegramClient.execute(AnswerCallbackQuery
-            .builder()
-            .callbackQueryId(callbackQuery.getId())
-            .text("❌ Помилка: " + e.getMessage())
-            .showAlert(true)
-            .build());
+        telegramClient.execute(
+            AnswerCallbackQuery.builder()
+                .callbackQueryId(callbackQuery.getId())
+                .text("❌ Error: " + e.getMessage())
+                .showAlert(true)
+                .build());
       } catch (Exception ex) {
         ex.printStackTrace();
       }
